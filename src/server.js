@@ -9,9 +9,6 @@ import { CONNECT_DB, GET_DB } from './config/mongodb'
 const START_SERVER = () => {
   const hostname = 'localhost'
   const port = 8080
-  app.get('/', (req, res) => {
-    res.end('<h1>Hello World!</h1><hr>')
-  })
 
   app.get('/', async (req, res) => {
     console.log(await GET_DB().listCollections().toArray())
@@ -37,7 +34,7 @@ const START_SERVER = () => {
     console.log('Connecting to MongoDB...')
     await CONNECT_DB()
     console.log('Connected to MongoDB')
-    START_SERVER()  }
+    START_SERVER()}
   catch (error) {
     console.error(error)
     process.exit(0)
