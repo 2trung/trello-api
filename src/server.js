@@ -1,21 +1,20 @@
 /* eslint-disable no-console */
 import express from 'express'
 const app = express()
-import exitHook from 'exit-hook'
+import exitHook from 'async-exit-hook'
 import { CONNECT_DB, CLOSE_DB, GET_DB } from './config/mongodb'
+import { env } from '~/config/environment'
 
 
 const START_SERVER = () => {
-  const hostname = 'localhost'
-  const port = 8080
 
   app.get('/', async (req, res) => {
     console.log(await GET_DB().listCollections().toArray())
     res.end('<h1>Hello World!</h1><hr>')
   })
 
-  app.listen(port, hostname, () => {
-    console.log(`Server runing  at http://${ hostname }:${ port }/`)
+  app.listen(env.APP_PORT, env.APP_HOST, () => {
+    console.log(`Server runing  at http://${ env.APP_HOST }:${ env.APP_PORT }/`)
   })
 
   exitHook(() => {
