@@ -1,9 +1,8 @@
 /* eslint-disable no-console */
 import express from 'express'
-import { mapOrder } from '~/utils/sorts.js'
-
 const app = express()
-import { CONNECT_DB, GET_DB } from './config/mongodb'
+import exitHook from 'exit-hook'
+import { CONNECT_DB, CLOSE_DB, GET_DB } from './config/mongodb'
 
 
 const START_SERVER = () => {
@@ -16,18 +15,15 @@ const START_SERVER = () => {
   })
 
   app.listen(port, hostname, () => {
-    // eslint-disable-next-line no-console
     console.log(`Server runing  at http://${ hostname }:${ port }/`)
   })
-}
 
-// CONNECT_DB()
-//   .then(() => console.log('Connected to MongoDB'))
-//   .then(() => START_SERVER())
-//   .catch(error => {
-//     console.error(error),
-//     process.exit(0)
-//   })
+  exitHook(() => {
+    console.log('Server is shutting down...')
+    CLOSE_DB()
+  })
+
+}
 
 (async () => {
   try {
