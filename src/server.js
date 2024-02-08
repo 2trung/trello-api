@@ -4,14 +4,12 @@ const app = express()
 import exitHook from 'async-exit-hook'
 import { CONNECT_DB, CLOSE_DB, GET_DB } from './config/mongodb'
 import { env } from '~/config/environment'
+import { APIs_V1 } from '~/routes/v1'
 
 
 const START_SERVER = () => {
 
-  app.get('/', async (req, res) => {
-    console.log(await GET_DB().listCollections().toArray())
-    res.end('<h1>Hello World!</h1><hr>')
-  })
+  app.use('/v1', APIs_V1)
 
   app.listen(env.APP_PORT, env.APP_HOST, () => {
     console.log(`Server runing  at http://${ env.APP_HOST }:${ env.APP_PORT }/`)
